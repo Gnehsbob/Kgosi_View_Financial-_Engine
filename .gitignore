@@ -1,0 +1,14 @@
+# --- Ignore Data ---
+data/
+*.csv
+*.zip
+
+# --- Ignore Logs & Journal ---
+trades.json
+*.log
+__pycache__/
+
+# --- Ignore Environment & VS Code ---
+.vscode/
+venv/
+.DS_Store

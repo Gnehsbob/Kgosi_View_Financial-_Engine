@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Plotly Relayout Capture</title>
+<style>html,body,#plot{height:100%;margin:0;padding:0;background:transparent}</style>
+</head>
+<body>
+<div id="plot"></div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script src="https://unpkg.com/@streamlit/component-lib@1.6.0/dist/index.js"></script>
+<script>
+function getArgs() {
+    return window.streamlitComponentProps && window.streamlitComponentProps.args ? window.streamlitComponentProps.args : {};
+}
+function render() {
+    const args = getArgs();
+    const fig = args.figure || {data: [], layout: {}};
+    const plotDiv = document.getElementById('plot');
+    plotDiv.innerHTML = '';
+    try {
+        Plotly.react(plotDiv, fig.data || [], fig.layout || {}, {responsive: true, scrollZoom: true, displayModeBar: true, modeBarButtonsToAdd: ['drawline', 'drawrect', 'eraseshape']});
+    } catch (e) {
+        Plotly.newPlot(plotDiv, [], {});
+    }
+    try { Streamlit.setFrameHeight(plotDiv.clientHeight + 20); } catch(e){}
+
+  
+    plotDiv.on('plotly_relayout', function(eventdata){
+        try { Streamlit.setComponentValue(eventdata); } catch(err) { console.warn('Failed', err); }
+    });
+}
+Streamlit.events.addEventListener(Streamlit.RENDER_EVENT, function() { render(); });
+render();
+</script>
+</body>
+</html>
