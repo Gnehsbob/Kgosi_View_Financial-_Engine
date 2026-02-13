@@ -5,16 +5,15 @@ import glob
 from pathlib import Path
 
 # --- CONFIG ---
-# Where the raw ZIPs are hiding
+
 SOURCE_ROOT = "/mnt/kgosi_view_data/projects/finance/data/raw_incoming/ASCII"
-# Where the clean CSVs should go
+
 DEST_DIR = "/mnt/kgosi_view_data/projects/finance/data"
 
 print(f"--- REFINERY STARTING ---")
 print(f"Hunting for ZIPs in: {SOURCE_ROOT}")
 
 # Recursive search for all .zip files
-# This finds files even inside raw_incoming/ASCII/eurusd/2010/...
 zip_files = list(Path(SOURCE_ROOT).rglob("*.zip"))
 
 if not zip_files:
@@ -31,8 +30,7 @@ for zip_path in zip_files:
         if "HISTDATA" in filename:
             # Extract Symbol
             parts = filename.split('_')
-            # Usually index 3 is symbol (e.g., EURUSD)
-            # HISTDATA, COM, ASCII, EURUSD, ...
+            
             symbol = parts[3]
             
             print(f"   Processing {symbol} ({filename})...", end=" ")
@@ -53,7 +51,7 @@ for zip_path in zip_files:
                     # Fix Timezone
                     df['Date'] = df['Date'].dt.tz_localize(None)
                     
-                    # Sort
+                 
                     df.sort_values('Date', inplace=True)
                     
                     # APPEND OR CREATE
