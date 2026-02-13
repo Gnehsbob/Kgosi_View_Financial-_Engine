@@ -10,7 +10,7 @@ SOURCE_ROOT = "/mnt/kgosi_view_data/projects/finance/data/raw_incoming/ASCII"
 # Where the clean CSVs should go
 DEST_DIR = "/mnt/kgosi_view_data/projects/finance/data"
 
-print(f"--- 🏭 REFINERY STARTING ---")
+print(f"--- REFINERY STARTING ---")
 print(f"Hunting for ZIPs in: {SOURCE_ROOT}")
 
 # Recursive search for all .zip files
@@ -18,10 +18,10 @@ print(f"Hunting for ZIPs in: {SOURCE_ROOT}")
 zip_files = list(Path(SOURCE_ROOT).rglob("*.zip"))
 
 if not zip_files:
-    print("❌ No ZIP files found! Check your rsync.")
+    print("No ZIP files found! Check your rsync.")
     exit()
 
-print(f"📦 Found {len(zip_files)} raw files. Processing...")
+print(f"Found {len(zip_files)} raw files. Processing...")
 
 for zip_path in zip_files:
     try:
@@ -71,9 +71,9 @@ for zip_path in zip_files:
                         # Create mode
                         df.to_csv(final_csv, index=False)
                         
-            print("✅ Done")
+            print("Done")
             
     except Exception as e:
-        print(f"\n❌ Error on {filename}: {e}")
+        print(f"\n Error on {filename}: {e}")
 
 print("\n--- REFINERY FINISHED ---")

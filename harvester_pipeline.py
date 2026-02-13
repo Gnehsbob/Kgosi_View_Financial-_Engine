@@ -109,17 +109,17 @@ def download_histdata_year(browser, pair, year):
         
         form = soup.find('form', {'id': 'file_down'})
         if not form:
-            logger.error(f"[{pair} {year}] ⚠️  TRAP PAGE: No form found")
+            logger.error(f"[{pair} {year}]  TRAP PAGE: No form found")
             return None
         
         token_input = form.find('input', {'name': 'tk'})
         if not token_input:
-            logger.error(f"[{pair} {year}] 🚫 BOT DETECTED: Token field missing entirely")
+            logger.error(f"[{pair} {year}]  BOT DETECTED: Token field missing entirely")
             return None
         
         token_value = token_input.get('value')
         if not token_value:
-            logger.error(f"[{pair} {year}] 🚫 BOT DETECTED: Token has no value (trap page)")
+            logger.error(f"[{pair} {year}]  BOT DETECTED: Token has no value (trap page)")
             return None
         
         logger.info(f"[{pair} {year}] ✓ Token extracted: {token_value[:8]}...")
@@ -156,7 +156,7 @@ def download_histdata_year(browser, pair, year):
             for chunk in download_resp.iter_content(chunk_size=8192):
                 f.write(chunk)
         
-        logger.info(f"[{pair} {year}] ✅ Downloaded {zip_path.stat().st_size / 1024:.1f} KB")
+        logger.info(f"[{pair} {year}] Downloaded {zip_path.stat().st_size / 1024:.1f} KB")
         return zip_path
         
     except Exception as e:
@@ -188,7 +188,7 @@ def process_zip_to_csv(zip_path, pair, year):
                     df = pd.concat([existing, df]).drop_duplicates(subset=['datetime']).sort_values('datetime')
                 
                 df.to_csv(output_path, index=False)
-                logger.info(f"[{pair} {year}] 💾 Saved to {output_path.name}")
+                logger.info(f"[{pair} {year}] Saved to {output_path.name}")
                 
         # Cleanup ZIP
         os.remove(zip_path)
@@ -201,7 +201,7 @@ def process_zip_to_csv(zip_path, pair, year):
 # ========== MAIN ==========
 
 def main():
-    logger.info("🚀 Starting Robust HistData Harvester")
+    logger.info("Starting Robust HistData Harvester")
     
     browser = BrowserSession()
     
@@ -209,7 +209,7 @@ def main():
     total_failed = 0
     
     for pair in PAIRS:
-        logger.info(f"\n{'='*50}\n📊 TARGET: {pair.upper()}\n{'='*50}")
+        logger.info(f"\n{'='*50}\n TARGET: {pair.upper()}\n{'='*50}")
         
         for year in YEARS:
             # Check if we already have data for this year
@@ -218,7 +218,7 @@ def main():
                 df = pd.read_csv(output_path)
                 df['datetime'] = pd.to_datetime(df['datetime'])
                 if any(df['datetime'].dt.year == year):
-                    logger.info(f"[{pair} {year}] ⏭️  Already have data")
+                    logger.info(f"[{pair} {year}] ⏭Already have data")
                     continue
             
             # Download
