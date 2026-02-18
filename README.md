@@ -1,7 +1,5 @@
 
-PROJECT KGOSI_VIEW:ENGINEERING DOCUMENTATION
-
-Architect: Lehlohonolo Bokgosi Letebele
+PROJECT KGOSI_VIEW
 Project Type: Distributed Private Cloud & Financial Analytics Cluster
 Status: Production (v20  Stable)
 
